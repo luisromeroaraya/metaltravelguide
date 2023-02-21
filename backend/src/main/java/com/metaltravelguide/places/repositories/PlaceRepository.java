@@ -11,5 +11,4 @@ import java.util.List;
 public interface PlaceRepository extends JpaRepository<Place, Long> {
     @Query("select p from Place p where p.user.id = ?1")
     List<Place> findAllByUser(Long id);
-
 }

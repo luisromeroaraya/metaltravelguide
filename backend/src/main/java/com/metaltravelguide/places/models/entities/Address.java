@@ -7,12 +7,16 @@ import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import java.io.Serial;
+import java.io.Serializable;
 
 @Embeddable
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Address {
+public class Address implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 5025774476188403719L;
     @Column(name = "address_street", nullable = false)
     private String street;
     @Column(name = "address_number", nullable = false)

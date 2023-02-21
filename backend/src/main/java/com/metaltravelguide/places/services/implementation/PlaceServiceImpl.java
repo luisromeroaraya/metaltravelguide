@@ -22,39 +22,45 @@ import java.util.stream.Collectors;
 public class PlaceServiceImpl implements PlaceService {
     private final PlaceRepository placeRepository;
     private final UserRepository userRepository;
-    private final PlaceMapper placeMapper;
 
-    public PlaceServiceImpl(PlaceRepository placeRepository, UserRepository userRepository, PlaceMapper placeMapper) {
+    public PlaceServiceImpl(PlaceRepository placeRepository, UserRepository userRepository) {
         this.placeRepository = placeRepository;
         this.userRepository = userRepository;
-        this.placeMapper = placeMapper;
     }
 
     @Override
     public PlaceDTO create(PlaceCreateForm placeCreateForm) {
-        Place place = placeMapper.toEntity(placeCreateForm);
+        Place place = new Place();
+        place.setGoogleId(placeCreateForm.getGoogleId());
+        place.setName(placeCreateForm.getName());
+        place.setAddress(placeCreateForm.getAddress());
+        place.setContact(placeCreateForm.getContact());
+        place.setType(placeCreateForm.getType());
+        place.setDescription(placeCreateForm.getDescription());
+        place.setImage(placeCreateForm.getImage());
+        place.setUser(userRepository.findByUsername(placeCreateForm.getUsername()).orElseThrow(() -> new UsernameNotFoundException("Username not found.")));
         place = placeRepository.save(place);
-        return placeMapper.toDto(place);
+        return PlaceMapper.toDto(place);
     }
 
     @Override
     public List<PlaceDTO> readAll() {
         return placeRepository.findAll().stream()
-                .map(placeMapper::toDto)
+                .map(PlaceMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<PlaceDTO> readAllFromUser(Long id) {
         return placeRepository.findAllByUser(id).stream()
-                .map(placeMapper::toDto)
+                .map(PlaceMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     @Override
     public PlaceDTO readOne(Long id) {
         return placeRepository.findById(id)
-                .map(placeMapper::toDto)
+                .map(PlaceMapper::toDto)
                 .orElseThrow(() -> new ElementNotFoundException(Place.class, id));
     }
 
@@ -82,7 +88,7 @@ public class PlaceServiceImpl implements PlaceService {
         if (placeUpdateForm.getImage() != null)
             place.setImage(placeUpdateForm.getImage());
         place = placeRepository.save(place);
-        return placeMapper.toDto(place);
+        return PlaceMapper.toDto(place);
     }
 
     @Override

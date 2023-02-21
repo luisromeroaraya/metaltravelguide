@@ -7,6 +7,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.io.Serial;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -19,6 +20,8 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @AllArgsConstructor
 public class User implements UserDetails {
+    @Serial
+    private static final long serialVersionUID = 6453721413145325362L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
