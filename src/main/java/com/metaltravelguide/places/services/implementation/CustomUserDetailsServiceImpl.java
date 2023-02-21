@@ -1,12 +1,12 @@
 package com.metaltravelguide.places.services.implementation;
 
+import com.metaltravelguide.places.enums.Country;
 import com.metaltravelguide.places.exceptions.AlreadyExistsException;
 import com.metaltravelguide.places.exceptions.CannotChangeOtherAdminException;
 import com.metaltravelguide.places.exceptions.ElementNotFoundException;
 import com.metaltravelguide.places.exceptions.UserNotTheSameException;
 import com.metaltravelguide.places.mappers.UserMapper;
 import com.metaltravelguide.places.models.dtos.UserDTO;
-import com.metaltravelguide.places.models.entities.Place;
 import com.metaltravelguide.places.models.entities.User;
 import com.metaltravelguide.places.models.forms.UserCreateForm;
 import com.metaltravelguide.places.models.forms.UserUpdateForm;
@@ -19,20 +19,17 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static com.metaltravelguide.places.mappers.UserMapper.findByName;
 
 @Service
 public class CustomUserDetailsServiceImpl implements UserDetailsService {
     private final UserRepository userRepository;
-    private final UserMapper userMapper;
     private final PasswordEncoder encoder;
 
-    public CustomUserDetailsServiceImpl(UserRepository userRepository, UserMapper userMapper, PasswordEncoder encoder) {
+    public CustomUserDetailsServiceImpl(UserRepository userRepository, PasswordEncoder encoder) {
         this.userRepository = userRepository;
-        this.userMapper = userMapper;
         this.encoder = encoder;
     }
 
@@ -54,12 +51,12 @@ public class CustomUserDetailsServiceImpl implements UserDetailsService {
 
     public List<UserDTO> readAll(String role) {
         return userRepository.findUsersByRole(role).stream()
-                .map(userMapper::toDto)
+                .map(UserMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     public UserDTO readOne(Long id) {
-        return userMapper.toDto(userRepository.findById(id)
+        return UserMapper.toDto(userRepository.findById(id)
                 .orElseThrow(() -> new UsernameNotFoundException("Connection not possible.")));
     }
 
@@ -83,11 +80,11 @@ public class CustomUserDetailsServiceImpl implements UserDetailsService {
         catch(Exception exception) {
             throw new AlreadyExistsException(form.getNickname(), "nickname");
         }
-        return userMapper.toDto(user);
+        return UserMapper.toDto(user);
     }
 
     public UserDTO readProfile(String username) {
-        return userMapper.toDto(userRepository.findByUsername(username)
+        return UserMapper.toDto(userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Connection not possible.")));
     }
 
@@ -113,7 +110,7 @@ public class CustomUserDetailsServiceImpl implements UserDetailsService {
         catch(Exception exception) {
             throw new AlreadyExistsException(form.getNickname(), "nickname");
         }
-        return userMapper.toDto(user);
+        return UserMapper.toDto(user);
     }
 
     public void enable(Long id) {
@@ -137,5 +134,9 @@ public class CustomUserDetailsServiceImpl implements UserDetailsService {
         if (isAdmin)
             throw new CannotChangeOtherAdminException(User.class, user.getUsername());
         userRepository.delete(user);
+    }
+
+    private Country findByName(String countryIso) {
+        return Arrays.stream(Country.values()).filter(country -> country.name().equalsIgnoreCase(countryIso)).findFirst().orElse(null);
     }
 }

@@ -7,13 +7,17 @@ import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import java.io.Serial;
+import java.io.Serializable;
 
 @Embeddable
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Contact {
+public class Contact implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 299468828545931466L;
     @Column(name = "contact_telephone")
     private String telephone;
     @Column(name = "contact_mail")
