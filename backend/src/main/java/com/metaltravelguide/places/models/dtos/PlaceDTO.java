@@ -6,6 +6,8 @@ import com.metaltravelguide.places.enums.Type;
 import lombok.Builder;
 import lombok.Data;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.Instant;
 import java.util.Set;
 
@@ -14,7 +16,9 @@ import java.util.Set;
  */
 @Data
 @Builder
-public class PlaceDTO {
+public class PlaceDTO implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 8710012142831720952L;
     private Long id;
     private String googleId;
     private String name;
