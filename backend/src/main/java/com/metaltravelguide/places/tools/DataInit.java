@@ -63,8 +63,14 @@ public class DataInit implements InitializingBean {
     );
     @Override
     public void afterPropertiesSet() {
-        userRepository.saveAll(users);
-        placeRepository.saveAll(places);
-        commentRepository.saveAll(comments);
+        if (userRepository.count() == 0) {
+            userRepository.saveAll(users);
+        }
+        if (placeRepository.count() == 0) {
+            placeRepository.saveAll(places);
+        }
+        if (commentRepository.count() == 0) {
+            commentRepository.saveAll(comments);
+        }
     }
 }
