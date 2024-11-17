@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  APISERVER: "",
-  APIKEY: ""
+  APISERVER: "https://metaltravelguide.herokuapp.com/api/",
+  APIKEY: "AIzaSyCYoQO6XOZ5cTiaXQbLSzPe7c3JgNNX4Qk"
 };
 
 /*
