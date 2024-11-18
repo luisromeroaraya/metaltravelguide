@@ -14,7 +14,7 @@ A Worldwide travel guide for *metalheads* made with [Java Spring](https://spring
 
 Check the frontend here: [MTG Website](https://luisromeroaraya.github.io/metaltravelguide/)
 
-You can test the Backend API commands here: [Swagger-UI](https://metaltravelguide.herokuapp.com/swagger-ui/index.html)
+You can test the Backend API commands here: [Swagger-UI](https://metaltravelguide.onrender.com/swagger-ui/index.html)
 
 UML use case diagram:
 
@@ -40,7 +40,7 @@ Entity relationship diagram:
 - [JWT-decode](https://www.npmjs.com/package/jwt-decode)
 - [Java-JWT](https://github.com/auth0/java-jwt)
 - [MySQL](https://www.mysql.com/)
-- [Heroku](https://www.heroku.com)
+- [Render](https://www.render.com)
 - [Cloudinary](https://cloudinary.com/)
 - [Favicon](https://favicon.io/)
 
